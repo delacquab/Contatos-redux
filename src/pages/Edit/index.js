@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+//import { useParams } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux'
 
-export default function Edit() {
+export default function Edit(props) {
+  const id = props.match.params.contato_id
+  //const { contato_id } = useParams()
+  const dispatch = useDispatch()
+  const contato = useSelector(store => store.contato)
+  const [nome, setNome] = useState('')
+  const [sobrenome, setSobrenome] = useState('')
+
+  useEffect(() => {
+    dispatch({ type: "GET_CONTATO", payload: id })
+    setNome(contato[0].nome)
+    setSobrenome(contato[0].sobrenome)
+  }, [dispatch, contato[0].nome], contato[0].sobrenome)
+
+  function handleClick() {
+    const contato = { nome, sobrenome, id };
+    dispatch({ type: "EXCLUIR_CONTATO", payload: id });
+    dispatch({ type: "SET_CONTATO", payload: contato });
+    //dispatch({ type: "SET_CONTATO_ID", payload: contato });
+    props.history.push("/");
+  }
+
+
   return (
     <div>
-      <p>edit</p>
+      <h1>Altera</h1>
+      <label>Nome</label>
+      <input
+        type="text"
+        placeholder="nome"
+        value={nome}
+        onChange={e => setNome(e.target.value)}
+      ></input>
+      <label>Sobrenome</label>
+      <input
+        type="text"
+        placeholder="sobrenome"
+        value={sobrenome}
+        onChange={e => setSobrenome(e.target.value)}
+      ></input>
+      <button onClick={handleClick}>Alterar</button>
     </div>
   );
 }

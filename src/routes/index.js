@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { NotFound } from "../pages/NotFound";
 import Create from "../pages/Create";
+import Edit from '../pages/Edit'
 
 const Routes = () => (
   <>

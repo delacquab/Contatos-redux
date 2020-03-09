@@ -12,29 +12,23 @@ export default function Home() {
     dispatch({ type: "GET_CONTATOS" });
   }, [dispatch]);
 
-  const handleAlterar = id => {
-    console.log(id);
-
-    <Link to={"/1/edit"}>gfgd</Link>;
-  };
 
   const handleExcluir = id => {
-    console.log(id);
     dispatch({ type: "EXCLUIR_CONTATO", payload: id });
   };
 
   return (
     <div>
-      <Link to={"/cadastro"}>Adicionar Contato</Link>
+      <Link to={"/create"}>Adicionar Contato</Link>
       <div>
         <ul>
           {contatos.map(contato => {
             return (
               <li>
                 {contato.id + " " + contato.nome + " " + contato.sobrenome}{" "}
-                <button onClick={x => handleAlterar(contato.id)}>
+                <Link to={`/${contato.id}/edit`}>
                   Alterar
-                </button>
+                </Link>
                 <button onClick={x => handleExcluir(contato.id)}>
                   Excluir
                 </button>

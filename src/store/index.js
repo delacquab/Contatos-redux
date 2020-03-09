@@ -1,19 +1,45 @@
 import { createStore } from "redux";
+import { persistReducer, persistStore } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
 
 const initialState = {
   contatos: [],
   qtdContatos: 0,
-  id: 1
+  id: 1,
+  contato: [{
+    nome: "teste",
+    sobrenome: "teste"
+  }]
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
     case "SET_CONTATO":
-      console.log(state.contatos);
       return {
         ...state,
         contatos: [...state.contatos, action.payload]
       };
+
+    case "SET_CONTATO_ID":
+      return {
+        ...state,
+        contatos: state.contatos.filter(c => {
+          return c.id !== action.payload.id;
+        }),
+        contatos: [...state.contatos, action.payload]
+      };
+
+    case "GET_CONTATO":
+      //localStorage.setItem('todoapp', JSON.stringify(action.payload))
+      console.log(action.payload)
+      return {
+        ...state,
+        contato: state.contatos.filter(c => {
+          return c.id == action.payload;
+        })
+      };
+
 
     case "GET_CONTATOS":
       //localStorage.setItem('todoapp', JSON.stringify(action.payload))
@@ -41,10 +67,11 @@ function reducer(state = initialState, action) {
       };
 
     case "EXCLUIR_CONTATO":
+      console.log(action.payload)
       return {
         ...state,
         contatos: state.contatos.filter(c => {
-          return c.id !== action.payload;
+          return c.id != action.payload;
         })
       };
 
@@ -53,6 +80,17 @@ function reducer(state = initialState, action) {
   }
 }
 
-const store = createStore(reducer);
+//const store = createStore(reducer);
+const persistConfig = {
+  key: "contatos",
+  storage,
+}
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+const store = createStore(persistedReducer);
+
+const persistor = persistStore(store)
+
+//export default store;
+export { store, persistor };

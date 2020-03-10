@@ -10,32 +10,41 @@ export default function Home() {
 
   useEffect(() => {
     dispatch({ type: "GET_CONTATOS" });
+    dispatch({ type: "GET_QTD_CONTATOS" });
   }, [dispatch]);
 
 
   const handleExcluir = id => {
     dispatch({ type: "EXCLUIR_CONTATO", payload: id });
+    dispatch({ type: "GET_QTD_CONTATOS" });
   };
 
   return (
     <div>
-      <Link to={"/create"}>Adicionar Contato</Link>
+      <Link data-test="novo-contato" to={"/create"}>Adicionar Contato</Link>
       <div>
-        <ul>
-          {contatos.map(contato => {
-            return (
-              <li>
-                {contato.id + " " + contato.nome + " " + contato.sobrenome}{" "}
-                <Link to={`/${contato.id}/edit`}>
-                  Alterar
+        {qtdContatos !== 0 ?
+          <ul>
+            {contatos.map(contato => {
+              return (
+                <li>
+                  {contato.id + " " + contato.nome + " " + contato.sobrenome}{" "}
+                  <Link data-test="editar" to={`/${contato.id}/edit`}>
+                    Alterar
                 </Link>
-                <button onClick={x => handleExcluir(contato.id)}>
-                  Excluir
+                  <button data-test="apagar" onClick={x => handleExcluir(contato.id)}>
+                    Excluir
                 </button>
-              </li>
-            );
-          })}
-        </ul>
+                </li>
+              );
+            })}
+          </ul>
+          :
+          <div data-test="sem-contatos">
+            <p>Vazio</p>
+          </div>}
+        <p data-test="totalDeContatos">Contatos: {qtdContatos}</p>
+
       </div>
     </div>
   );

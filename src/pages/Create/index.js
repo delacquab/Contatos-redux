@@ -21,6 +21,7 @@ export default function Cadastro({ history }) {
       <h1>Cadastro</h1>
       <label>Nome</label>
       <input
+        data-test="nome"
         type="text"
         placeholder="nome"
         value={nome}
@@ -28,12 +29,13 @@ export default function Cadastro({ history }) {
       ></input>
       <label>Sobrenome</label>
       <input
+        data-test="email"
         type="text"
         placeholder="sobrenome"
         value={sobrenome}
         onChange={e => setSobrenome(e.target.value)}
       ></input>
-      <button onClick={handleClick}>Cadastrar</button>
+      <button data-test="criar" onClick={handleClick}>Cadastrar</button>
     </div>
   );
 }

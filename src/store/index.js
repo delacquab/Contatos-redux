@@ -9,12 +9,30 @@ const initialState = {
   id: 1,
   contato: [{
     nome: "teste",
-    sobrenome: "teste"
+    sobrenome: "teste",
+    id: 0
   }]
 };
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case "SET_INITIAL_CONTATO":
+      return {
+        ...state,
+        contato: [{
+          nome: "teste",
+          sobrenome: "teste",
+          id: 0
+        }]
+      }
+
+
+    case "GET_QTD_CONTATOS":
+      return {
+        ...state,
+        qtdContatos: state.contatos.length
+      }
+
     case "SET_CONTATO":
       return {
         ...state,

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 //import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux'
+import { Redirect } from "react-router-dom";
 
 export default function Edit(props) {
   const id = props.match.params.contato_id
@@ -9,12 +10,23 @@ export default function Edit(props) {
   const contato = useSelector(store => store.contato)
   const [nome, setNome] = useState('')
   const [sobrenome, setSobrenome] = useState('')
+  const [deuErro, setDeuErro] = useState(false)
 
-  useEffect(() => {
-    dispatch({ type: "GET_CONTATO", payload: id })
-    setNome(contato[0].nome)
-    setSobrenome(contato[0].sobrenome)
-  }, [dispatch, contato[0].nome], contato[0].sobrenome)
+
+  try {
+    useEffect(() => {
+      console.log(id)
+      dispatch({ type: "GET_CONTATO", payload: id })
+      setNome(contato[0].nome)
+      setSobrenome(contato[0].sobrenome)
+    }, [dispatch, contato[0].nome, contato[0].sobrenome])
+  } catch (error) {
+    dispatch({ type: "SET_INITIAL_CONTATO" })
+    { console.log(contato) }
+    setDeuErro(true)
+  }
+
+
 
   function handleClick() {
     const contato = { nome, sobrenome, id };
@@ -27,9 +39,12 @@ export default function Edit(props) {
 
   return (
     <div>
+      {deuErro && <Redirect to="/404" />}
+
       <h1>Altera</h1>
       <label>Nome</label>
       <input
+        data-test="nome"
         type="text"
         placeholder="nome"
         value={nome}
@@ -37,12 +52,15 @@ export default function Edit(props) {
       ></input>
       <label>Sobrenome</label>
       <input
+        data-test="email"
         type="text"
         placeholder="sobrenome"
         value={sobrenome}
         onChange={e => setSobrenome(e.target.value)}
       ></input>
-      <button onClick={handleClick}>Alterar</button>
+      <button data-test="salvar" onClick={handleClick}>Alterar</button>
+      {console.log(deuErro)}
+      <p>{deuErro ? "Sim" : "Não"}</p>
     </div>
   );
 }

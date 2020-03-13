@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const NotFound = () => (
   <div className="not-found">
     Página não encontrada
-    <Link to="/">Voltar</Link>
+    <Link data-test="voltar" to="/">Voltar</Link>
   </div>
 )
 

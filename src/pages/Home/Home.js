@@ -24,26 +24,28 @@ export default function Home() {
       <Link data-test="novo-contato" to={"/create"}>Adicionar Contato</Link>
       <div>
         {qtdContatos !== 0 ?
-          <ul>
-            {contatos.map(contato => {
-              return (
-                <li>
-                  {contato.id + " " + contato.nome + " " + contato.sobrenome}{" "}
-                  <Link data-test="editar" to={`/${contato.id}/edit`}>
-                    Alterar
+          <div>
+            <ul>
+              {contatos.map(contato => {
+                return (
+                  <li>
+                    {contato.id + " " + contato.nome + " " + contato.sobrenome}{" "}
+                    <Link data-test="editar" to={`/${contato.id}/edit`}>
+                      Alterar
                 </Link>
-                  <button data-test="apagar" onClick={x => handleExcluir(contato.id)}>
-                    Excluir
+                    <button data-test="apagar" onClick={x => handleExcluir(contato.id)}>
+                      Excluir
                 </button>
-                </li>
-              );
-            })}
-          </ul>
+                  </li>
+                );
+              })}
+            </ul>
+            <p data-test={`total-${qtdContatos}`}>Contatos: {qtdContatos}</p>
+          </div>
           :
           <div data-test="sem-contatos">
             <p>Vazio</p>
           </div>}
-        <p data-test="totalDeContatos">Contatos: {qtdContatos}</p>
 
       </div>
     </div>
